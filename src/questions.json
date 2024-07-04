@@ -1,0 +1,14 @@
+[
+{ "question": "17 rounded of to the nearest 10 is..", "options": ["A. 10", "B. 20", "C. 17"], "correct": "B. 20" },
+{ "question": "45 rounded of to the nearest 10 is..", "options": ["A. 50", "B. 45", "C. 40"], "correct": "A. 50" },
+{ "question": "75 rounded of to the nearest 10 is..", "options": ["A. 70", "B. 80", "C. 175"], "correct": "B. 80" },
+{ "question": "19 rounded of to the nearest 10 is..", "options": ["A. 20", "B. 10", "C. 19"], "correct": "A. 20" },
+{ "question": "64 rounded of to the nearest 10 is..", "options": ["A. 64", "B. 70", "C. 60"], "correct": "C. 60" },
+{ "question": "0 rounded of to the nearest 10 is..", "options": ["A. 10", "B. 1", "C. 0"], "correct": "C. 0" },
+{ "question": "98 rounded of to the nearest 10 is..", "options": ["A. 80", "B. 100", "C. 89"], "correct": "B. 100" },
+{ "question": "199 rounded of to the nearest 10 is..", "options": ["A. 190", "B. 100", "C. 200"], "correct": "C. 200" },
+{ "question": "94 rounded of to the nearest 10 is..", "options": ["A. 100", "B. 94", "C. 90"], "correct": "C. 90" },
+{ "question": "165 rounded of to the nearest 10 is..", "options": ["A. 160", "B. 170", "C. 150"], "correct": "B. 170" },
+{ "question": "445 rounded of to the nearest 10 is..", "options": ["A. 450", "B. 440", "C. 500"], "correct": "A. 450" },
+{ "question": "999 rounded of to the nearest 10 is..", "options": ["A. 990", "B. 1000", "C. 909"], "correct": "B. 1000" }
+]
