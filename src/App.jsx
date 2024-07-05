@@ -111,6 +111,11 @@ function App() {
     setIsScoreModalOpen(true);
   };
 
+  const handleReset = () => {
+    setAnswers(Array(questions.length).fill(null));
+    setCurrentQuestionIndex(0);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-600">Rounding Off To Nearest 10</h1>
@@ -149,6 +154,12 @@ function App() {
           className="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 border border-gray-300 shadow-custom-md rounded-lg hover:shadow-custom-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px]"
         >
           Submit
+        </button>
+        <button
+          onClick={handleReset}
+          className="bg-red-600 text-white py-2 px-4 ml-4 rounded-lg hover:bg-red-700 border border-gray-300 shadow-custom-md rounded-lg hover:shadow-custom-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px]"
+        >
+          Reset
         </button>
       </div>
 
