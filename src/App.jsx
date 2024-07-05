@@ -175,6 +175,10 @@ function App() {
           handleClose={() => setIsScoreModalOpen(false)}
         />
       )}
+
+      <footer className="text-center mt-8 text-gray-500">
+        &copy; {new Date().getFullYear()} www.mathinenglish.com. All rights reserved.
+      </footer>
     </div>
   );
 }
