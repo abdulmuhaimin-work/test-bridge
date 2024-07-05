@@ -9,6 +9,7 @@ const NameModal = ({ name, setName, handleModalSubmit, handleModalClose }) => (
         placeholder="Enter your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        maxLength={32}
         className="border border-gray-300 p-2 rounded-lg w-full mb-4"
       />
       <div className="flex justify-center">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import questions from './questions.json';
+import questions from './utils/questions.json';
 import NameModal from './components/NameModal';
 import UnfinishedModal from './components/UnfinishedModal';
 import QuestionCard from './components/QuestionCard';
@@ -125,6 +125,7 @@ function App() {
         placeholder="Enter your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        maxLength={32}
         className="border border-gray-300 p-2 rounded-lg w-full md:w-1/2"
       />
       <div className="flex justify-center items-center">

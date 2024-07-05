@@ -1,5 +1,5 @@
 import React from 'react';
-import questions from '../questions';
+import questions from '../utils/questions.json';
 
 function ScoreModal({ score, scores, handleClose }) {
   return (
