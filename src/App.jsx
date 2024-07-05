@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import questions from './questions.json';
 import NameModal from './components/NameModal';
 import UnfinishedModal from './components/UnfinishedModal';
 import QuestionCard from './components/QuestionCard';
+import ScoreModal from './components/ScoreModal'; // Import the new ScoreModal component
+import { supabase } from './supabaseClient';
 
 function App() {
   const [name, setName] = useState('');
@@ -11,13 +13,45 @@ function App() {
   const [score, setScore] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUnfinishedModalOpen, setIsUnfinishedModalOpen] = useState(false);
+  const [isScoreModalOpen, setIsScoreModalOpen] = useState(false); // State for ScoreModal
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [scores, setScores] = useState([]);
+
+  useEffect(() => {
+    fetchScores();
+  }, []);
+
+  const fetchScores = async () => {
+    const { data, error } = await supabase
+      .from('highscores')
+      .select('score, name')
+      .order('score', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching scores:', error);
+    } else {
+      setScores(data);
+    }
+  };
+
+  const updateHighScore = async (newScore, playerName) => {
+    const { data, error } = await supabase
+      .from('highscores')
+      .insert([{ score: newScore, name: playerName }]);
+
+    if (error) {
+      console.error('Error updating high score:', error);
+    } else {
+      console.log('High score updated successfully');
+      fetchScores();
+    }
+  };
 
   const handleChange = (index, value) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
     setAnswers(newAnswers);
-    if (index < questions.length - 1) {
+    if (index === currentQuestionIndex && index < questions.length - 1) {
       setCurrentQuestionIndex(index + 1);
     }
   };
@@ -40,12 +74,25 @@ function App() {
       }
     });
     setScore(newScore);
+
+    // Update the high score regardless of whether it's a new high score
+    updateHighScore(newScore, name);
+    setIsScoreModalOpen(true); // Open the ScoreModal
   };
 
   const handleModalSubmit = () => {
     if (name.trim() !== '') {
       setIsModalOpen(false);
-      handleSubmit();
+
+      let newScore = 0;
+      answers.forEach((answer, index) => {
+        if (answer === questions[index].correct) {
+          newScore += 1;
+        }
+      });
+      setScore(newScore);
+      updateHighScore(newScore, name);
+      setIsScoreModalOpen(true); // Open the ScoreModal
     }
   };
 
@@ -70,12 +117,18 @@ function App() {
       }
     });
     setScore(newScore);
+    updateHighScore(newScore, name);
+    setIsScoreModalOpen(true); // Open the ScoreModal
+  };
+
+  const handleScoreModalClose = () => {
+    setIsScoreModalOpen(false);
   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-600">Rounding Off To Nearest 10</h1>
-      <div className="text-center mb-8">
+      <div className="flex justify-between items-center mb-8">
         <input
           type="text"
           placeholder="Enter your name"
@@ -83,6 +136,12 @@ function App() {
           onChange={(e) => setName(e.target.value)}
           className="border border-gray-300 p-2 rounded-lg w-full md:w-1/2"
         />
+        <div
+          className="text-gray-600 text-xl cursor-pointer"
+          onClick={() => setIsScoreModalOpen(true)}
+        >
+          Score: {score !== null ? score : 'N/A'}
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {questions.map((q, index) => (
@@ -99,16 +158,12 @@ function App() {
       <div className="text-center mt-8">
         <button
           onClick={handleSubmit}
-          className="bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transform hover:scale-105"
+          className="bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
         >
           Submit
         </button>
-        {score !== null && (
-          <div className={`mt-4 text-xl font-semibold ${score < questions.length / 2 ? 'text-red-600' : 'text-green-600'}`}>
-            Your score: {score} / {questions.length}
-          </div>
-        )}
       </div>
+
       {isModalOpen && (
         <NameModal
           name={name}
@@ -117,10 +172,19 @@ function App() {
           handleModalClose={handleModalClose}
         />
       )}
+
       {isUnfinishedModalOpen && (
         <UnfinishedModal
           handleUnfinishedModalSubmit={handleUnfinishedModalSubmit}
           handleUnfinishedModalClose={handleUnfinishedModalClose}
+        />
+      )}
+
+      {isScoreModalOpen && (
+        <ScoreModal
+          score={score}
+          scores={scores}
+          handleClose={handleScoreModalClose}
         />
       )}
     </div>
