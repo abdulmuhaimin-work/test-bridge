@@ -4,8 +4,8 @@ import questions from './questions.json';
 import NameModal from './components/NameModal';
 import UnfinishedModal from './components/UnfinishedModal';
 import QuestionCard from './components/QuestionCard';
-import ScoreModal from './components/ScoreModal'; // Import the new ScoreModal component
-import { supabase } from './supabaseClient';
+import ScoreModal from './components/ScoreModal';
+import { supabase } from './utils/supabaseClient';
 
 function App() {
   const [name, setName] = useState('');
@@ -13,7 +13,7 @@ function App() {
   const [score, setScore] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUnfinishedModalOpen, setIsUnfinishedModalOpen] = useState(false);
-  const [isScoreModalOpen, setIsScoreModalOpen] = useState(false); // State for ScoreModal
+  const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [scores, setScores] = useState([]);
 
@@ -74,10 +74,8 @@ function App() {
       }
     });
     setScore(newScore);
-
-    // Update the high score regardless of whether it's a new high score
     updateHighScore(newScore, name);
-    setIsScoreModalOpen(true); // Open the ScoreModal
+    setIsScoreModalOpen(true);
   };
 
   const handleModalSubmit = () => {
@@ -92,16 +90,8 @@ function App() {
       });
       setScore(newScore);
       updateHighScore(newScore, name);
-      setIsScoreModalOpen(true); // Open the ScoreModal
+      setIsScoreModalOpen(true);
     }
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleUnfinishedModalClose = () => {
-    setIsUnfinishedModalOpen(false);
   };
 
   const handleUnfinishedModalSubmit = () => {
@@ -118,31 +108,29 @@ function App() {
     });
     setScore(newScore);
     updateHighScore(newScore, name);
-    setIsScoreModalOpen(true); // Open the ScoreModal
-  };
-
-  const handleScoreModalClose = () => {
-    setIsScoreModalOpen(false);
+    setIsScoreModalOpen(true);
   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-600">Rounding Off To Nearest 10</h1>
-      <div className="flex justify-between items-center mb-8">
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border border-gray-300 p-2 rounded-lg w-full md:w-1/2"
-        />
+
+      <input
+        type="text"
+        placeholder="Enter your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="border border-gray-300 p-2 rounded-lg w-full md:w-1/2"
+      />
+      <div className="flex justify-center items-center">
         <div
-          className="text-gray-600 text-xl cursor-pointer"
+          className="w-32 p-2 text-gray-600 text-xl cursor-pointer hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px] transition-all duration-300"
           onClick={() => setIsScoreModalOpen(true)}
         >
           Score: {score !== null ? score : 'N/A'}
         </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {questions.map((q, index) => (
           <QuestionCard
@@ -158,7 +146,7 @@ function App() {
       <div className="text-center mt-8">
         <button
           onClick={handleSubmit}
-          className="bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+          className="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 border border-gray-300 shadow-custom-md rounded-lg hover:shadow-custom-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px]"
         >
           Submit
         </button>
@@ -169,14 +157,14 @@ function App() {
           name={name}
           setName={setName}
           handleModalSubmit={handleModalSubmit}
-          handleModalClose={handleModalClose}
+          handleModalClose={() => setIsModalOpen(false)}
         />
       )}
 
       {isUnfinishedModalOpen && (
         <UnfinishedModal
           handleUnfinishedModalSubmit={handleUnfinishedModalSubmit}
-          handleUnfinishedModalClose={handleUnfinishedModalClose}
+          handleUnfinishedModalClose={() => setIsUnfinishedModalOpen(false)}
         />
       )}
 
@@ -184,7 +172,7 @@ function App() {
         <ScoreModal
           score={score}
           scores={scores}
-          handleClose={handleScoreModalClose}
+          handleClose={() => setIsScoreModalOpen(false)}
         />
       )}
     </div>

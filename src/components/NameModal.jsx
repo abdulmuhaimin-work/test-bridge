@@ -11,16 +11,16 @@ const NameModal = ({ name, setName, handleModalSubmit, handleModalClose }) => (
         onChange={(e) => setName(e.target.value)}
         className="border border-gray-300 p-2 rounded-lg w-full mb-4"
       />
-      <div className="flex justify-end">
+      <div className="flex justify-center">
         <button
           onClick={handleModalClose}
-          className="bg-gray-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mr-2"
+          className="bg-gray-600 text-white py-2 px-4 mr-2 rounded-lg hover:bg-gray-700 border border-gray-300 shadow-[10px_10px_0_0_gray] rounded-lg hover:shadow-[15px_15px_2px_0_gray] transition-all duration-300 transform hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px]"
         >
           Cancel
         </button>
         <button
           onClick={handleModalSubmit}
-          className="bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+          className="bg-indigo-600 text-white py-2 px-4 ml-2 rounded-lg hover:bg-indigo-700 border border-gray-300 shadow-custom-md rounded-lg hover:shadow-custom-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-[-5px] hover:translate-y-[-3px]"
         >
           Submit
         </button>
